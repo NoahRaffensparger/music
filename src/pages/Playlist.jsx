@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
 
-export default function NewSong() {
+export default function Playlist() {
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
     const [songSelect, setSongSelect] = useState(0);

@@ -8,6 +8,8 @@ CREATE TABLE users (
     username VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(225) NOT NULL,
+    image_url TEXT,
+    profile_song_href VARCHAR(60),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -17,9 +19,12 @@ CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users(id) ON DELETE CASCADE,
   type post_type NOT NULL,
+  image_url TEXT,
   music_id VARCHAR(60),
+  title TEXT,
+  artist TEXT,
   caption TEXT, 
-  rating INT NOT NULL CHECK (rating BETWEEN 1 and 5),
+  rating INT,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -28,8 +33,7 @@ CREATE TABLE follows (
     following_id INTEGER NOT NULL,
     FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (following_id) REFERENCES users(id) ON DELETE CASCADE,
-    PRIMARY KEY (follower_id, following_id),
-    CHECK (follower_id <> following_id)
+    PRIMARY KEY (follower_id, following_id)
 );
 
 CREATE TABLE likes (

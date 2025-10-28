@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.901.0",
     "@lottiefiles/dotlottie-react": "^0.15.2",
     "@lottiefiles/lottie-player": "^2.0.12",
     "@tailwindcss/vite": "^4.1.12",
+    "aws-sdk": "^2.1692.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.544.0",
+    "multer": "^2.0.2",
+    "multer-s3": "^3.0.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.2",
