@@ -77,7 +77,7 @@ export default function Header() {
 
     return (
         <>
-            <nav className='absolute py-2 z-5 flex flex-col fixed top-0 w-screen bg-white border-b-1 border-gray-200 rounded-b-lg' ref={dropdownRef}>
+            <nav className='absolute py-2 z-5 flex flex-col fixed top-0 w-screen bg-white border-b-1 border-gray-200' ref={dropdownRef}>
                 <div className='flex justify-between'>
                     <Link to="/" className='place-content-center flex gap-2'>
                         <img src="/etta.png" className="ml-2 h-7 md:h-8" />
@@ -149,13 +149,13 @@ export default function Header() {
                     }
                 </div >
 
-                <div className={`flex flex-col text-center font-semibold gap-4 transition-all duration-300 sm:w-1/2 lg:w-1/3 sm:fixed sm:bg-white sm:top-10 sm:right-0 sm:border-b sm:rounded-b-xl ${isMenuOpen ? 'h-[124px]  sm:h-[136px] pt-4 mt-2 border-t-2 border-gray-200 sm:pb-4 ' : 'h-0 pointer-events-none border-white'}`}>
-                    <div className={`flex place-self-center gap-2 transition-all ${isMenuOpen ? 'opacity-100 duration-300' : 'opacity-0 duration-100'}`}>
+                <div className={`flex flex-col text-center font-semibold gap-4 transition-all duration-300 sm:w-1/2 lg:w-1/3 sm:fixed sm:bg-white sm:top-10 sm:right-0 sm:border-b sm:rounded-b-xl ${isMenuOpen ? 'h-[84px]  sm:h-[136px] pt-4 mt-2 border-t-2 border-gray-200 sm:pb-4 ' : 'h-0 pointer-events-none border-white'}`}>
+                    {/* <div className={`flex place-self-center gap-2 transition-all ${isMenuOpen ? 'opacity-100 duration-300' : 'opacity-0 duration-100'}`}>
                         <p>appearance</p>
                         <div onClick={() => setEnabled(prev => !prev)} className={`w-12 h-6 flex items-center rounded-full cursor-pointer transition-colors border-1 border-gray-400 ${enabled ? "bg-gray-900 p-[1px]" : "bg-white p-[2px]"}`}>
                             <img className={` rounded-full shadow-md transform transition-transform ${enabled ? "bg-white translate-x-[25px] w-[18px] h-[18px]" : "translate-x-0 w-5 h-5"}`} src={` ${enabled ? "/moon.png" : "/sun.png"}`} />
                         </div>
-                    </div>
+                    </div> */}
                     <a className={`transition-all ${isMenuOpen ? 'opacity-100 duration-400' : 'opacity-0 duration-100'}`}>log out</a>
                     <a className={`transition-all text-red-600 ${isMenuOpen ? 'opacity-100 duration-600' : 'opacity-0 duration-100'}`}>delete account</a>
                 </div>

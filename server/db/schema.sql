@@ -9,7 +9,11 @@ CREATE TABLE users (
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(225) NOT NULL,
     image_url TEXT,
-    profile_song_href VARCHAR(60),
+    header_artist_href VARCHAR(60),
+    header_artists VARCHAR(100),
+    header_image_url TEXT,
+    header_name VARCHAR(60),
+    header_url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

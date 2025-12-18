@@ -2,6 +2,8 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Home from './pages/Home';
+import EditProfile from './pages/EditProfile';
+import Followers from './pages/Followers';
 import Social from './pages/Social';
 import Post from './pages/Post';
 import Posts from './pages/Posts';
@@ -102,6 +104,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/edit" element={<EditProfile />} />
+          <Route path="/followers" element={<Followers />} />
           <Route path="/profile/:id" element={<User />} />
           <Route path="/new-log" element={<Post />} />
           <Route path="/new-playlist" element={<Playlist />} />

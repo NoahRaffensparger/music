@@ -375,7 +375,7 @@ export default function Posts() {
                 </div>
             )}
             {editPost && (
-                <div className="fixed inset-0 px-6 pt-30 sm:w-7/10 sm:mx-auto md:w-3/5 lg:w-full lg:mt-0 bg-black/50 z-50">
+                <div className="fixed inset-0 lg:px-0 pt-30 sm:w-7/10 sm:mx-auto md:w-3/5 lg:w-full lg:mt-0 bg-black/50 z-50">
                     <div className='bg-white px-4 pt-4 pb-4 rounded-xl'>
                         <div className='flex w-full justify-between items-center'>
                             <p className='font-medium pb-1 underline pl-2 text-gray-900' onClick={() => { handleUpdatePost(editPost.id, rating, caption); }}>Update</p>

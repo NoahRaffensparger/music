@@ -173,7 +173,7 @@ export default function Post() {
                                             className="flex items-center p-2 gap-3"
                                             onClick={() => {
 
-                                                if (trackAndArtistResults.type === "track") {
+                                                if (trackAndArtistResults.type === "song") {
                                                     const trackId = trackAndArtistResults.href.split("/").pop();
                                                     fetchTrack(trackId);
                                                 } else if (trackAndArtistResults.type === "artist") {

@@ -64,7 +64,11 @@ app.get("/api/me", authenticateToken, async (req, res) => {
         users.username,
         users.email,
         users.image_url,
-        users.profile_song_href,
+        users.header_artist_href, 
+        users.header_artists,
+        users.header_image_url,
+        users.header_name,
+        users.header_url,
 
         COALESCE(
           json_agg(
@@ -134,7 +138,11 @@ app.get("/api/me", authenticateToken, async (req, res) => {
         username: fullUser.username,
         email: fullUser.email,
         image_url: fullUser.image_url,
-        profile_song_href: fullUser.profile_song_href,
+        header_artist_href: fullUser.header_artist_href,
+        header_artists: fullUser.header_artists,
+        header_image_url: fullUser.header_image_url,
+        header_name: fullUser.header_name,
+        header_url: fullUser.header_url,
         posts: fullUser.posts,
         followers: fullUser.followers,
         following: fullUser.following
@@ -190,7 +198,11 @@ app.post('/login', async (req, res) => {
   users.username,
   users.email,
   users.image_url,
-  users.profile_song_href,
+  users.header_artist_href,
+  users.header_artists,
+  users.header_image_url,
+  users.header_name,
+  users.header_url,
 
   -- Posts authored by this user
   COALESCE(
@@ -267,7 +279,11 @@ GROUP BY users.id;
         username: fullUser.username,
         email: fullUser.email,
         image_url: fullUser.image_url,
-        profile_song_href: fullUser.profile_song_href,
+        header_artist_href: fullUser.header_artist_href,
+        header_artists: fullUser.header_artists,
+        header_image_url: fullUser.header_image_url,
+        header_name: fullUser.header_name,
+        header_url: fullUser.header_url,
         posts: fullUser.posts,
         followers: fullUser.followers,
         following: fullUser.following
@@ -393,7 +409,11 @@ SELECT
     u.email,
     u.password_hash,
     u.image_url,
-    u.profile_song_href,
+    u.header_artist_href,
+    u.header_artists,
+    u.header_image_url,
+    u.header_name,
+    u.header_url,
     u.created_at AS user_created_at,
     COALESCE(
         json_agg(
@@ -488,7 +508,7 @@ app.get("/api/search", async (req, res) => {
     const { tracks, artists, albums } = response.data;
 
     const formattedTracks = tracks.items.map(track => ({
-      type: "track",
+      type: "song",
       name: track.name,
       artists: track.artists.map(a => a.name).join(", "),
       album: track.album.name,
@@ -533,7 +553,7 @@ app.get("/api/search/:q", async (req, res) => {
     const { q } = req.params;
 
     const response = await axios.get(
-      `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=10`,
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=8`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -547,8 +567,10 @@ app.get("/api/search/:q", async (req, res) => {
       type: "track",
       name: track.name,
       artists: track.artists.map(a => a.name).join(", "),
+      artist_href: track.artists[0]?.href,
       album: track.album.name,
       image: track.album.images[0]?.url,
+      href: track.href,
       popularity: track.popularity
     }));
 
@@ -569,7 +591,11 @@ app.get('/api/users', async (req, res) => {
       u.created_at,
       u.password_hash,
       u.image_url,
-      u.profile_song_href,
+      u.header_artist_href,
+      u.header_artists,
+      u.header_image_url,
+      u.header_name,
+      u.header_url,
       --Posts by the user
     COALESCE(
       (
@@ -814,7 +840,7 @@ app.post('/api/add-user', upload.single("image"), async (req, res) => {
       imageUrl = `https://${bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
     }
     const result = await pool.query(
-      "INSERT INTO users (username, email, password_hash, image_url, profile_song_href) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email",
+      "INSERT INTO users (username, email, password_hash, image_url, header_artist_href, header_artists, header_image_url, header_name, header_url) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email",
       [username, email, passwordToStore, imageUrl, songHref]
     );
 
@@ -889,6 +915,144 @@ app.put('/api/posts/:postId', async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+app.put('/api/users/header/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const { artistsHref, artists, imageUrl, name, href } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE users 
+       SET header_artist_href = COALESCE($1, header_artist_href), 
+           header_artists = COALESCE($2, header_artists),
+           header_image_url = COALESCE($3, header_image_url),
+           header_name = COALESCE($4, header_name),
+           header_url = COALESCE($5, header_url)
+       WHERE id = $6
+       RETURNING *`,
+      [artistsHref, artists, imageUrl, name, href, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({
+      message: "User updated successfully",
+      user: result.rows[0]
+    });
+  } catch (err) {
+    console.error("Error updating post:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.put('/api/update-user-image', upload.single("image"), async (req, res) => {
+  console.log("✅ /api/update-user-image route executed");
+
+  const { userId } = req.body;
+  const file = req.file;
+
+  if (!userId) {
+    return res.status(400).json({ error: "Missing userId" });
+  }
+
+  try {
+    let imageUrl = null;
+
+    if (file) {
+      const fileName = `${Date.now()}-${file.originalname}`;
+      const bucket = process.env.S3_BUCKET_NAME;
+
+      const uploadParams = {
+        Bucket: bucket,
+        Key: fileName,
+        Body: file.buffer,
+        ContentType: file.mimetype
+      };
+
+      await s3.send(new PutObjectCommand(uploadParams));
+
+      imageUrl = `https://${bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+    } else {
+      return res.status(400).json({ error: "No image provided" });
+    }
+
+    const result = await pool.query(
+      "UPDATE users SET image_url = $1 WHERE id = $2 RETURNING id, username, email, image_url",
+      [imageUrl, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({
+      message: "Image updated successfully",
+      user: result.rows[0]
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/remove-user-image', (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: "userId is required" });
+  }
+
+  const sql = `
+    UPDATE users
+    SET image_url = NULL
+    WHERE id = $1
+    RETURNING *;
+  `;
+
+  pool.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(400).json({ error: err.message });
+    }
+
+    res.json({
+      message: 'success',
+      data: result.rows[0]
+    });
+  });
+});
+
+app.put('/api/change-username', (req, res) => {
+  const { userId, username } = req.body;
+
+  if (!userId || !username) {
+    return res.status(400).json({ error: "userId and username are required" });
+  }
+
+  const sql = `
+    UPDATE users
+    SET username = $2
+    WHERE id = $1
+    RETURNING *;
+  `;
+
+  pool.query(sql, [userId, username], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(400).json({ error: err.message });
+    }
+
+    res.json({
+      message: 'success',
+      data: result.rows[0]
+    });
+  });
+});
+
+
 
 app.put('/api/follow-user', ({ body }, res) => {
   const db = `INSERT INTO follows (follower_id, following_id) VALUES

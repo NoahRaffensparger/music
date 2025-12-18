@@ -1,13 +1,13 @@
 -- USERS
 TRUNCATE follows RESTART IDENTITY CASCADE;
 
-INSERT INTO users (username, email, password_hash, image_url, profile_song_href)
+INSERT INTO users (username, email, password_hash, image_url, header_artist_href, header_artists, header_image_url, header_name, header_url )
 VALUES
-  ('noah', 'noah@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/albert-dera-ILip77SbmOE-unsplash.jpg', '6CTWathupIiDs7U4InHnDA'),
-  ('sarah', 'sarah@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/jurica-koletic-7YVZYZeITc8-unsplash+(1).jpg', '6CTWathupIiDs7U4InHnDA'),
-  ('liam', 'liam@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/stefan-stefancik-QXevDflbl8A-unsplash.jpg', '6CTWathupIiDs7U4InHnDA'),
-  ('emma', 'emma@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/jimmy-fermin-bqe0J0b26RQ-unsplash.jpg', '6CTWathupIiDs7U4InHnDA'),
-  ('oliver', 'oliver@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/aiony-haust-3TLl_97HNJo-unsplash.jpg', '6CTWathupIiDs7U4InHnDA');
+  ('noah', 'noah@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/albert-dera-ILip77SbmOE-unsplash.jpg', '7HkdQ0gt53LP4zmHsL0nap', 'Ella Mai', 'https://i.scdn.co/image/ab67616d0000b2737ce0faf0620ab9c1779e1fbf', 'Trip', 'https://open.spotify.com/track/6CTWathupIiDs7U4InHnDA' ),
+  ('sarah', 'sarah@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/albert-dera-ILip77SbmOE-unsplash.jpg', '7HkdQ0gt53LP4zmHsL0nap', 'Ella Mai', 'https://i.scdn.co/image/ab67616d0000b2737ce0faf0620ab9c1779e1fbf', 'Trip', 'https://open.spotify.com/track/6CTWathupIiDs7U4InHnDA' ),
+  ('liam', 'liam@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/albert-dera-ILip77SbmOE-unsplash.jpg', '7HkdQ0gt53LP4zmHsL0nap', 'Ella Mai', 'https://i.scdn.co/image/ab67616d0000b2737ce0faf0620ab9c1779e1fbf', 'Trip', 'https://open.spotify.com/track/6CTWathupIiDs7U4InHnDA' ),
+  ('john', 'john@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/albert-dera-ILip77SbmOE-unsplash.jpg', '7HkdQ0gt53LP4zmHsL0nap', 'Ella Mai', 'https://i.scdn.co/image/ab67616d0000b2737ce0faf0620ab9c1779e1fbf', 'Trip', 'https://open.spotify.com/track/6CTWathupIiDs7U4InHnDA' ),
+  ('musicman', 'musicman@example.com', '$2b$10$abcdefghij1234567890abcdEfghijklmnoPqrstu', 'https://ettaappbucket.s3.us-east-2.amazonaws.com/albert-dera-ILip77SbmOE-unsplash.jpg', '7HkdQ0gt53LP4zmHsL0nap', 'Ella Mai', 'https://i.scdn.co/image/ab67616d0000b2737ce0faf0620ab9c1779e1fbf', 'Trip', 'https://open.spotify.com/track/6CTWathupIiDs7U4InHnDA' );
 
 
 

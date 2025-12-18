@@ -192,7 +192,7 @@ export default function Social() {
         <>
             <div className={`my-18 lg:grid lg:grid-cols-3 lg:gap-8 xl:gap-14 lg:w-7/8 xl:w-3/4 lg:mx-auto`}>
                 {posts.map((post, i) => (
-                    <div key={post.id} className={`px-6 sm:w-7/10 sm:mx-auto md:w-3/5 lg:w-full mt-5 lg:mt-0`}>
+                    <div key={post.id} className={`px-6 lg:px-0 sm:w-7/10 sm:mx-auto md:w-3/5 lg:w-full mt-5 lg:mt-0`}>
                         <div className="flex justify-between px-1">
                             <div className="flex flex-row gap-2 pb-1">
                                 <div className="flex flex-col justify-end">
